@@ -1,0 +1,26 @@
+Scripts et données de la note « Exoplanet orbital spacings fall in the level-repulsion class
+of the Riemann zeta zeros, but not on their law » — D. Niedbala Giraudin (ORCID 0009-0009-1526-1178).
+Assistance technique : Claude (Anthropic).
+
+Données : Open Exoplanet Catalogue (https://github.com/OpenExoplanetCatalogue/open_exoplanet_catalogue),
+commit e03d274e88bedc6efa6302fec11fb4eeab67201e du 2 novembre 2026.
+
+Ordre d'exécution (Python 3, numpy, scipy, mpmath) :
+1. extraire.py    : lit le dossier systems/ du catalogue et écrit systemes.json (déjà fourni).
+2. zeros.py       : calcule les zéros de zêta jusqu'à t = 6000 par Riemann-Siegel et écrit zeros.npy.
+3. analyse.py     : rapports d'écarts des planètes, des premiers, des zéros, de Poisson et GUE ; écrit resultats.json.
+4. robustesse.py  : retrait des 2 systèmes suspects, rééchantillonnage, modèle « hasard + écart minimal ».
+
+Vérification du 5 novembre 2026 : analyse.py rejoué dans un dossier vierge redonne exactement resultats.json
+(planètes 0,6517 [0,626 ; 0,677] sur 269 systèmes ; zéros 0,6161 ; premiers 10^6-10^8 0,4472 ;
+Poisson 0,3861 ; GUE 0,5958 ; système solaire 0,6057).
+
+COMPLÉMENT DU 6 NOVEMBRE 2026
+5. controle_lognormal.py ../open_exoplanet_catalogue : témoins à distance minimale de Hill
+   (log-normale de Dietrich, Malhotra & Apai 2024 ; ajustée aux minima observés ; fixe), masses du catalogue
+   ou déduites des rayons (Weiss & Marcy 2014 ; Chen & Kipping 2017), distribution complète de r.
+   Écrit resultats_complement.json. Sensibilité aux masses : FACTEUR_MASSE=0.5 (ou 2) RAPIDE=1 python3 controle_lognormal.py ...
+   Résultats : Dietrich 0,583 (0,560 à 0,611 selon les masses) ; ajustée 0,673 ; sans contrainte 0,382.
+6. distribution_r.py : part des rapports r > 0,8 (planètes 31,5 % [26,7 ; 36,5] ; zéros 24,5 %).
+   Ces deux scripts lisent zeros.npy, produit par zeros.py dans ce même dossier.
+Vérification : controle_lognormal.py rejoué après sa dernière modification redonne exactement resultats_complement.json.
